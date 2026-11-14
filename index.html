@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio - โรงเรียนทุ่งใหญ่เฉลิมราชอนุสรณ์ รัชมังคลาภิเษก</title>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0f4c81;
+            --secondary: #1e88e5;
+            --bg-light: #f0f4f8;
+            --text-dark: #1f2937;
+            --card-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Prompt', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #0b3963 0%, #1976d2 100%);
+            color: white;
+            text-align: center;
+            padding: 2.5rem 1rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 0.3rem;
+        }
+
+        header p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        /* Tab Navigation */
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: -1.5rem auto 2rem;
+            padding: 0 1rem;
+            max-width: 800px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .tab-btn {
+            flex: 1;
+            background: white;
+            border: 2px solid transparent;
+            border-radius: 12px;
+            padding: 1rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            text-align: center;
+            font-family: 'Prompt', sans-serif;
+        }
+
+        .tab-btn:hover {
+            transform: translateY(-3px);
+        }
+
+        .tab-btn.active {
+            border-color: var(--secondary);
+            background: #e3f2fd;
+        }
+
+        .tab-btn h3 {
+            font-size: 1.1rem;
+            color: var(--primary);
+            margin-bottom: 0.2rem;
+        }
+
+        .tab-btn span {
+            font-size: 0.85rem;
+            color: #555;
+            display: block;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto 3rem;
+            padding: 0 1rem;
+        }
+
+        .portfolio-section {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .portfolio-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Student Info Banner */
+        .info-banner {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--card-shadow);
+            border-left: 6px solid var(--primary);
+        }
+
+        .info-banner h2 {
+            color: var(--primary);
+            font-size: 1.4rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .info-banner p {
+            color: #4b5563;
+            font-size: 0.95rem;
+        }
+
+        /* Portfolio Pages Grid */
+        .pages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .page-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s ease;
+            cursor: zoom-in;
+        }
+
+        .page-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .page-card img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .page-label {
+            padding: 0.8rem 1rem;
+            background: #ffffff;
+            border-top: 1px solid #eee;
+            font-weight: 500;
+            color: var(--primary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.95rem;
+        }
+
+        .page-label small {
+            color: #888;
+            font-weight: 300;
+        }
+
+        /* Lightbox Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.88);
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+        }
+
+        .modal.open {
+            display: flex;
+        }
+
+        .modal img {
+            max-width: 95%;
+            max-height: 92vh;
+            border-radius: 8px;
+            box-shadow: 0 5px 30px rgba(0,0,0,0.5);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 36px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            background: #0b3963;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 600px) {
+            .nav-tabs {
+                flex-direction: column;
+            }
+            header h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>PORTFOLIO แฟ้มสะสมผลงาน</h1>
+        <p>โรงเรียนทุ่งใหญ่เฉลิมราชอนุสรณ์ รัชมังคลาภิเษก</p>
+    </header>
+
+    <!-- ปุ่มสลับดูผลงานของแต่ละคน -->
+    <div class="nav-tabs">
+        <button class="tab-btn active" onclick="switchTab('kawisara', this)">
+            <h3>นางสาว กวีสรา วิไล (พลอย)</h3>
+            <span>คณะครุศาสตร์ สาขาวิชาคณิตศาสตร์</span>
+        </button>
+        <button class="tab-btn" onclick="switchTab('nanthita', this)">
+            <h3>นางสาว นันทิตา หิรัญรัตน์ (ดรีม)</h3>
+            <span>คณะมนุษยศาสตร์และสังคมศาสตร์ สาขาภาษาไทย</span>
+        </button>
+    </div>
+
+    <div class="container">
+        
+        <!-- คนที่ 1: นางสาว กวีสรา วิไล -->
+        <section id="kawisara" class="portfolio-section active">
+            <div class="info-banner">
+                <h2>นางสาว กวีสรา วิไล (พลอย)</h2>
+                <p><strong>สาขาที่สมัคร:</strong> คณะครุศาสตร์ สาขาวิชาคณิตศาสตร์ มหาวิทยาลัยราชภัฏนครศรีธรรมราช &nbsp;|&nbsp; <strong>ติดต่อ:</strong> 098-083-5707 / kwisra.phlxy2552@gmail.com</p>
+            </div>
+
+            <div class="pages-grid">
+                <div class="page-card" onclick="openModal('IMG_1893.jpeg')">
+                    <img src="IMG_1893.jpeg" alt="ปก Portfolio นางสาวกวีสรา วิไล">
+                    <div class="page-label">
+                        <span>หน้าที่ 1 : หน้าปก (Cover)</span>
+                        <small>คลิกเพื่อขยาย</small>
+                    </div>
+                </div>
+
+                <div class="page-card" onclick="openModal('IMG_1894.jpeg')">
+                    <img src="IMG_1894.jpeg" alt="เหตุผลที่สมัครเข้าเรียนต่อ นางสาวกวีสรา วิไล">
+                    <div class="page-label">
+                        <span>หน้าที่ 2 : เหตุผลที่สมัครเข้าเรียนต่อ</span>
+                        <small>คลิกเพื่อขยาย</small>
+                    </div>
+                </div>
+
+                <div class="page-card" onclick="openModal('IMG_1895.jpeg')">
+                    <img src="IMG_1895.jpeg" alt="ประวัติส่วนตัว นางสาวกวีสรา วิไล">
+                    <div class="page-label">
+                        <span>หน้าที่ 3 : ประวัติส่วนตัว (Profile)</span>
+                        <small>คลิกเพื่อขยาย</small>
+                    </div>
+                </div>
+
+                <div class="page-card" onclick="openModal('IMG_1896.jpeg')">
+                    <img src="IMG_1896.jpeg" alt="กิจกรรมด้านภาวะผู้นำ นางสาวกวีสรา วิไล">
+                    <div class="page-label">
+                        <span>หน้าที่ 4 : กิจกรรมด้านภาวะผู้นำ (Activities)</span>
+                        <small>คลิกเพื่อขยาย</small>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- คนที่ 2: นางสาว นันทิตา หิรัญรัตน์ -->
+        <section id="nanthita" class="portfolio-section">
+            <div class="info-banner">
+                <h2>นางสาว นันทิตา หิรัญรัตน์ (ดรีม)</h2>
+                <p><strong>สาขาที่สมัคร:</strong> คณะมนุษยศาสตร์และสังคมศาสตร์ สาขาภาษาไทย มหาวิทยาลัยราชภัฏนครศรีธรรมราช &nbsp;|&nbsp; <strong>ติดต่อ:</strong> 065-618-2510 / Nantidanun10@gmail.com</p>
+            </div>
+
+            <div class="pages-grid">
+                <div class="page-card" onclick="openModal('IMG_1898.jpeg')">
+                    <img src="IMG_1898.jpeg" alt="ปก Portfolio นางสาวนันทิตา หิรัญรัตน์">
+                    <div class="page-label">
+                        <span>หน้าที่ 1 : หน้าปก (Cover)</span>
+                        <small>คลิกเพื่อขยาย</small>
+                    </div>
+                </div>
+
+                <div class="page-card" onclick="openModal('IMG_1899.jpeg')">
+                    <img src="IMG_1899.jpeg" alt="เหตุผลที่อยากเข้าศึกษาต่อ นางสาวนันทิตา หิรัญรัตน์">
+                    <div class="page-label">
+                        <span>หน้าที่ 2 : เหตุผลที่อยากเข้าศึกษาต่อ (Reason)</span>
+                        <small>คลิกเพื่อขยาย</small>
+                    </div>
+                </div>
+
+                <div class="page-card" onclick="openModal('IMG_1897.jpeg')">
+                    <img src="IMG_1897.jpeg" alt="ประวัติโดยย่อและการศึกษา นางสาวนันทิตา หิรัญรัตน์">
+                    <div class="page-label">
+                        <span>หน้าที่ 3 : ประวัติโดยย่อและการศึกษา (Profile & Education)</span>
+                        <small>คลิกเพื่อขยาย</small>
+                    </div>
+                </div>
+
+                <div class="page-card" onclick="openModal('IMG_1900.jpeg')">
+                    <img src="IMG_1900.jpeg" alt="กิจกรรมที่ภาคภูมิใจ นางสาวนันทิตา หิรัญรัตน์">
+                    <div class="page-label">
+                        <span>หน้าที่ 4 : กิจกรรมที่ภาคภูมิใจ (Activities)</span>
+                        <small>คลิกเพื่อขยาย</small>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Modal สำหรับขยายดูภาพขนาดเต็ม -->
+    <div id="imageModal" class="modal" onclick="closeModal()">
+        <span class="close-btn">&times;</span>
+        <img id="modalImg" src="" alt="ภาพขยาย">
+    </div>
+
+    <footer>
+        <p>Portfolio Showcase &copy; โรงเรียนทุ่งใหญ่เฉลิมราชอนุสรณ์ รัชมังคลาภิเษก</p>
+    </footer>
+
+    <script>
+        function switchTab(personId, btnElement) {
+            // ซ่อนเนื้อหาทั้งหมด
+            document.querySelectorAll('.portfolio-section').forEach(sec => {
+                sec.classList.remove('active');
+            });
+            // เอาสถานะ active ออกจากปุ่มทั้งหมด
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // แสดงคนที่เลือก
+            document.getElementById(personId).classList.add('active');
+            btnElement.classList.add('active');
+        }
+
+        function openModal(imageSrc) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImg');
+            modalImg.src = imageSrc;
+            modal.classList.add('open');
+        }
+
+        function closeModal() {
+            document.getElementById('imageModal').classList.remove('open');
+        }
+    </script>
+
+</body>
+</html>
